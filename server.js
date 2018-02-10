@@ -302,16 +302,46 @@ function updateComment(url, request) {
   }
 
   return response;
-
-
-
 }
 
 function deleteComment(url, request) {
+  //copied from deleteArticle, removed for each, because there is only one article for any given comment
+  const id = Number(url.split('/').filter(segment => segment)[1]);
+  const savedComment = database.comments[id];
+  const response = {};
 
+  if (savedComment) {
+    database.comments[id] = null;
+    const articleCommentIds = database.articles[savedComment.articleId].commentIds;
+    articleCommentIds.splice(articleCommentIds.indexOf(id),1);
+    const userCommentIds = database.users[savedComment.username].commentIds;
+    userCommentIds.splice(userCommentIds.indexOf(id), 1);
+
+    response.status = 204;
+  } else {
+
+    response.status = 404;
+  }
+
+  return response;
 }
 
+//work on errors from test, add comment to return
+
 function upvoteComment(url, request) {
+  const id = Number(url.split('/').filter(segment => segment)[1]);
+  const username = request.body && request.body.username;
+  let savedComment = database.comments[id];
+  const response = {};
+
+  if (savedComment && database.users[username]) {
+    savedComment = upvote(savedComment, username);
+
+    response.body = {comment: savedComment};
+    response.status = 200;
+  } else {
+    response.status = 400;
+  }
 
 }
 
