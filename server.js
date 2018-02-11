@@ -1,4 +1,7 @@
 // database is let instead of const to allow us to modify it in test.js
+
+var yaml = require('yaml-js');
+
 let database = {
   users: {},
   articles: {},
@@ -6,6 +9,19 @@ let database = {
   nextArticleId: 1,
   nextCommentId: 1
 };
+
+//Loading the database from YAML
+function loadDatabase() {
+
+    return yaml.load();
+
+};
+
+//save Database to yaml
+function saveDatabase() {
+
+    yaml.dump(database);
+}
 
 /*
 database.users['existing_user'] = {
@@ -35,8 +51,6 @@ downvotedBy: []
 */
 
 
-
-console.log(database);
 
 const routes = {
   '/users': {
