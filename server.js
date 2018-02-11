@@ -7,6 +7,37 @@ let database = {
   nextCommentId: 1
 };
 
+/*
+database.users['existing_user'] = {
+  username: 'existing_user',
+  articleIds: [],
+  commentIds: []
+};
+
+database.articles[1] = {
+  id: 1,
+  title: 'Title',
+  url: 'http://url.com',
+  username: 'existing_user',
+  commentIds: [],
+  upvotedBy: [],
+  downvotedBy: []
+};
+
+database.comments[1] = {
+id: 1,
+body: 'This is a comment',
+articleId: 1,
+username: 'existing_user',
+upvotedBy: [],
+downvotedBy: []
+};
+*/
+
+
+
+console.log(database);
+
 const routes = {
   '/users': {
     'POST': getOrCreateUser
@@ -343,11 +374,29 @@ function upvoteComment(url, request) {
     response.status = 400;
   }
 
+  return response;
 }
 
+/*
+console.log("Tests!");
+console.log(upvoteComment('/comments/1/upvote',{body: {username: 'existing_user'}}));
+*/
 function downvoteComment(url, request) {
+  const id = Number(url.split('/').filter(segment => segment)[1]);
+  const username = request.body && request.body.username;
+  let savedComment = database.comments[id];
+  const response = {};
 
-}
+  if (savedComment && database.users[username]) {
+    savedComment = downvote(savedComment, username);
+
+    response.body = {comment: savedComment};
+    response.status = 200;
+  } else {
+    response.status = 400;
+  }
+
+  return response;}
 
 // Write all code above this line.
 
