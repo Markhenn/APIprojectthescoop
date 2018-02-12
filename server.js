@@ -11,7 +11,7 @@ let database = {
   nextCommentId: 1
 };
 
-//Loading the database from YAML
+//Loading the database from yaml
 function loadDatabase() {
 
   try {
@@ -28,35 +28,11 @@ function loadDatabase() {
 //save Database to yaml
 function saveDatabase() {
 
-    fs.writeFile('backup_database.yml', yaml.safeDump(database), (error) => { });
+    fs.writeFile('backup_database.yml', yaml.safeDump(database), (error) => {
+      if (error) {
+        console.log(error);
+      }});
 }
-
-/*
-database.users['existing_user'] = {
-  username: 'existing_user',
-  articleIds: [],
-  commentIds: []
-};
-
-database.articles[1] = {
-  id: 1,
-  title: 'Title',
-  url: 'http://url.com',
-  username: 'existing_user',
-  commentIds: [],
-  upvotedBy: [],
-  downvotedBy: []
-};
-
-database.comments[1] = {
-id: 1,
-body: 'This is a comment',
-articleId: 1,
-username: 'existing_user',
-upvotedBy: [],
-downvotedBy: []
-};
-*/
 
 
 
@@ -399,10 +375,7 @@ function upvoteComment(url, request) {
   return response;
 }
 
-/*
-console.log("Tests!");
-console.log(upvoteComment('/comments/1/upvote',{body: {username: 'existing_user'}}));
-*/
+
 function downvoteComment(url, request) {
   const id = Number(url.split('/').filter(segment => segment)[1]);
   const username = request.body && request.body.username;
