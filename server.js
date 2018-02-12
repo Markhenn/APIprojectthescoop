@@ -1,7 +1,7 @@
 // database is let instead of const to allow us to modify it in test.js
 
-var yaml = require('js-yaml');
-var fs = require('fs');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 let database = {
   users: {},
@@ -11,19 +11,21 @@ let database = {
   nextCommentId: 1
 };
 
+
 //Loading the database from yaml
 function loadDatabase() {
 
   try {
-  var data = yaml.safeLoad(fs.readFileSync('backup_database.yml', 'utf8'));
+
+  let data =  yaml.safeLoad(fs.readFileSync('backup_database.yml', 'utf8'));
+
+  return data;
 
   } catch (e) {
   console.log(e);
   }
 
-  return data;
-
-};
+}
 
 //save Database to yaml
 function saveDatabase() {
